@@ -1,21 +1,21 @@
-
+const BACKEND = process.env.BACKEND || 'http://3.93.177.17:8583/BelejanorSwitch/services';
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    titleTemplate: '%s - coop',
-    title: 'coop',
+    titleTemplate: '%s - Cooperativa UNIR',
+    title: 'Cooperativa UNIR',
     htmlAttrs: {
       lang: 'en',
     },
     meta: [
-      {charset: 'utf-8'},
-      {name: 'viewport', content: 'width=device-width, initial-scale=1'},
-      {hid: 'description', name: 'description', content: ''},
-      {name: 'format-detection', content: 'telephone=no'},
+      { charset: 'utf-8' },
+      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+      { hid: 'description', name: 'description', content: '' },
+      { name: 'format-detection', content: 'telephone=no' },
     ],
     link: [
-      {rel: 'icon', type: 'image/x-icon', href: '/favicon.ico'},
-      {rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300&display=swap'},
+      { rel: 'icon', type: 'image/x-icon', href: 'https://ecuador.unir.net/wp-content/uploads/sites/8/2021/01/favicon.ico' },
+      // { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300&display=swap' },
     ],
   },
 
@@ -25,11 +25,20 @@ export default {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
-    {src: '@/plugins/vuesax'},
+    { src: '@/plugins/vuesax' },
+    { src: '@/plugins/filters' }
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
+  axios: { proxy: true },
+  proxy: {
+    '/api/': {
+      target: BACKEND,
+      pathRewrite: { '^/api/': '' },
+      changeOrigin: true,
+    },
+  },
 
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [
@@ -39,16 +48,19 @@ export default {
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
+    '@nuxtjs/axios',
   ],
 
   // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify
   vuetify: {
     customVariables: ['~/assets/variables.scss'],
+    treeShake: true,
     theme: {
       dark: false,
       themes: {
         light: {
-          primary: '#fd0',
+          primary: '#1464ac',
+          secPrimary: '#fd0',
           secondary: '#0f265c',
           accent: '#f5f6f7',
         },

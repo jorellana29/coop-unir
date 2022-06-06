@@ -3,13 +3,11 @@
     <v-navigation-drawer
       v-model="drawer"
       clipped
-      :dark="'white'"
+      :dark="false"
       fixed
       app
-    
     >
     <v-list class="mt-3">
-      <font face="Comic Sans MS,arial,verdana">Este texto tiene otra tipografía</font>
       <v-list-item-group
         v-model="selectedItem"
         color="primary"
@@ -20,14 +18,14 @@
           nuxt
           :to="item.to"
           exact
-          active-class="primary"
+          active-class="primary white--text"
           class="py-2"
         >
           <!-- <v-list-item-icon class="secondary--text">
             <v-icon v-text="item.icon"></v-icon>
           </v-list-item-icon> -->
           <v-list-item-content>
-            <v-list-item-title  class="title  secondary--text ml-5" v-text="item.title"></v-list-item-title>
+            <v-list-item-title class="title ml-5" v-text="item.title"></v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </v-list-item-group>
@@ -35,16 +33,22 @@
     </v-navigation-drawer>
     <v-app-bar
       clipped-left
+      height="70%"
       color="white"
       app
     >
       <v-img
-       src="https://www.pichincha.com/portal/Portals/0/MainPichincha.svg?ver=_XlM6NWjdDPfjZiQD96oOg%3d%3d"
-       max-width="9%"
+       :src="require('@/assets/imgs/logo.png')"
+       max-width="6%"
        class="ml-5"
        ></v-img>
 
       <v-app-bar-nav-icon v-if="$vuetify.breakpoint.smAndDown" @click.stop="drawer = !drawer" />
+<!--        <v-tabs align-with-title style="padding-left: 25%">-->
+<!--          <v-tab>Productos</v-tab>-->
+<!--          <v-tab>Movimientos</v-tab>-->
+<!--          <v-tab>Transferencias</v-tab>-->
+<!--        </v-tabs>-->
       <!-- <v-btn
         icon
         @click.stop="miniVariant = !miniVariant"
@@ -55,7 +59,7 @@
       <v-avatar
   color="grey lighten-3"
   radius="10px"
-  size="40" 
+  size="40"
 >DT</v-avatar>
 <span class="ml-3 secondary--text">DANNY ALEXANDER TOALA ORELLANA</span>
 <v-divider vertical inset class="mx-4 py-6 secondary--text"></v-divider>
@@ -87,19 +91,19 @@ export default {
       selectedItem: 0,
       items: [
         {
-          icon: 'mdi-apps',
-          title: 'Transferencias',
+          icon: 'mdi-chart-bubble',
+          title: 'Cartera',
           to: '/'
         },
         {
-          icon: 'mdi-chart-bubble',
-          title: 'Pagos',
-          to: '/pagos'
+          icon: 'mdi-apps',
+          title: 'Transferencias',
+          to: '/transferencias'
         },
         {
           icon: 'mdi-chart-bubble',
-          title: 'Consultas',
-          to: '/consultas'
+          title: 'Contactos',
+          to: '/contactos'
         },
         {
           icon: 'mdi-chart-bubble',
@@ -109,9 +113,9 @@ export default {
       ],
       miniVariant: false,
       title: 'Vuetify.js'
-    }
+    };
   }
-}
+};
 </script>
 <style >
 /* .v-navigation-drawer {
