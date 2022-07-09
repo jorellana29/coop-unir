@@ -34,11 +34,11 @@
       </v-row>
       <v-row class="px-4">
         <v-col cols="12" class="mb-0 pb-0">
-          <p class="font-weight-bold text-h4">{{ 400 | currency }}</p>
+          <p class="font-weight-bold text-h4">{{ available | currency }}</p>
           <p class="font-weight-medium text-subtitle-1 mb-0 pb-0 mt-0 pt-0">Disponible</p>
         </v-col>
         <v-col cols="12" class="mt-0 pb-0">
-          <p class="font-weight-bold text-h4">{{ 500 | currency }}</p>
+          <p class="font-weight-bold text-h4">{{ countable | currency }}</p>
           <v-row>
             <v-col cols="6">
               <p class="font-weight-medium text-subtitle-1">Contable</p>
@@ -161,6 +161,8 @@ export default {
     dataSales: null,
     dataMovements: null,
     movements: {},
+    available: '',
+    countable: '',
     num: '12',
     items: ['Foo', 'Bar', 'Fizz', 'Buzz'],
     trip: {
@@ -177,7 +179,7 @@ export default {
   created () {
   },
   methods: {
-    transformDate(date) {
+    transformDate (date) {
       moment.locale('es-mx');
       return moment(date).format('MMMM D');
     },
@@ -186,7 +188,7 @@ export default {
     },
     async init () {
       try {
-/*         const sales = await createAxiosPetition('311000', '401010758310');
+        /*         const sales = await createAxiosPetition('311000', '401010758310');
         if (sales.ISO_039_ResponseCode !== '000') {
           this.$vs.notification({
             color: 'danger',
@@ -310,6 +312,9 @@ export default {
           ISO_124_ExtendedData: '',
           ISO_BitMap: 'camt.998.888.A'
         };
+        const convert = this.convertSales(this.dataSales.ISO_054_AditionalAmounts);
+        this.countable = convert.countable;
+        this.available = convert.available;
         const preMovements = [];
         this.movements = {};
         for (const x of this.dataMovements.ISO_120_ExtendedData.split('|')) {
@@ -323,16 +328,16 @@ export default {
             type: arrObjMov[4],
             result: arrObjMov[5],
           };
-          const date = new Date(objMov.date).toLocaleDateString()
+          const date = new Date(objMov.date).toLocaleDateString();
           if (!this.movements.hasOwnProperty(date)) {
             this.movements[date] = {
               transactions: []
-            }
+            };
           }
-          //preMovements.push(objMov);
+          // preMovements.push(objMov);
           this.movements[date].transactions.push(objMov);
-          //this.movements.push(objMov);
-          //this.movements
+          // this.movements.push(objMov);
+          // this.movements
         }
       } catch (err) {
         let soapMsg = '';
@@ -355,6 +360,37 @@ export default {
         });
       }
     },
+    convertSales (value) {
+      const matrix = [];
+      console.log('Arreglo original: ', value);
+      const LONGITUD_PEDAZOS = 20;
+      for (let i = 0; i < value.length; i += LONGITUD_PEDAZOS) {
+        const slice = value.slice(i, i + LONGITUD_PEDAZOS);
+        matrix.push(slice);
+      }
+      console.log('Arreglo de arreglos: ', matrix);
+      const countable = '';
+      const available = '';
+      if (matrix.length > 1) {
+        const first = matrix[0];
+        const type1 = first.substring(2, 4);
+        const sale1 = `${Number(first.substring(8, 18))}.${first.substring(18, 20)}`;
+        const second = matrix[1];
+        const type2 = second.substring(2, 4);
+        const sale2 = `${Number(second.substring(8, 18))}.${second.substring(18, 20)}`;
+        return {
+          [type1 === '01' ? 'countable' : 'available']: sale1 || 0,
+          [type2 === '02' ? 'available' : 'countable']: sale2 || 0
+        };
+      } else {
+        const second = matrix[0];
+        const type = second.substring(2, 4);
+        const sale = `${Number(second.substring(8, 18))}.${second.substring(18, 20)}`;
+        return {
+          [type === '01' ? 'countable' : 'available']: sale || 0
+        };
+      }
+    }
   },
   head: {
     title () {

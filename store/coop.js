@@ -1,3 +1,5 @@
+import { createAxiosPetition } from '@/assets/utils';
+
 export const state = () => ({
   contacts: [
     {
@@ -14,7 +16,7 @@ export const state = () => ({
       country: 'EC',
       phone: '0995435948',
       account: '401010152934',
-      avatar: '2'
+      avatar: '3'
     },
     {
       id: '1712224383',
@@ -30,7 +32,7 @@ export const state = () => ({
       country: 'EC',
       phone: '0987432762',
       account: '401010303445',
-      avatar: '4'
+      avatar: '1'
     },
     {
       id: '1716792245',
@@ -46,7 +48,7 @@ export const state = () => ({
       country: 'EC',
       phone: '0993389694',
       account: '401010752059',
-      avatar: '1'
+      avatar: '4'
     },
     {
       id: '1701280669',
@@ -54,7 +56,21 @@ export const state = () => ({
       country: 'EC',
       phone: '0995927367',
       account: '401010771553',
-      avatar: '2'
+      avatar: '3'
     }
-  ]
+  ],
+  sales: {}
 });
+
+export const mutations = {
+  setSales (state, data) {
+    state.sales = data;
+  },
+};
+
+export const actions = {
+  async getSales ({ commit }) {
+    const sales = await createAxiosPetition('311000', '401010758310');
+    commit('setSales', sales);
+  }
+};
