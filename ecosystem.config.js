@@ -1,11 +1,11 @@
 module.exports = {
   apps: [
     {
-      name: 'NuxtAppName',
+      name: 'coop-unir',
       exec_mode: 'cluster',
-      instances: 'max', // Or a number of instances
+      instances: '1',
       script: './node_modules/nuxt/bin/nuxt.js',
       args: 'start'
     }
   ]
-}
+};
