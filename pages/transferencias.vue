@@ -43,7 +43,7 @@
         <v-container class="px-6">
           <v-form lazy-validation v-model="valid" ref="form">
           <v-row align="center" >
-            <v-col>
+            <v-col class="mb-0 pb-0">
               <p class="secondary--text font-weight-medium">Monto de la transferencia</p>
               <InputNumber
                 v-model="form.mont"
@@ -91,6 +91,7 @@
                           v-model="form.id"
                           :rules="rules.required"
                           outlined
+                          class="mb-0"
                           label="Identificación"
                         ></v-text-field>
                     </v-card-text>
@@ -122,7 +123,8 @@
                               name: '',
                               id: '',
                               account: '',
-                              mont: 0
+                              mont: 0,
+                              description: ''
                             }"
                           >
                             <v-avatar left>
@@ -174,6 +176,17 @@
                 </v-tab-item>
               </v-tabs>
             </v-col>
+           <v-col cols="12" md="12" class="px-7 mt-n4 pt-n4">
+             <p class="secondary--text font-weight-medium">Descripción</p>
+             <v-textarea
+               v-model="form.description"
+               label="Descripción de la transferencia"
+               auto-grow
+               outlined
+               rows="3"
+               row-height="25"
+             ></v-textarea>
+           </v-col>
             <v-col cols="12" md="12" align="end">
               <v-btn color="primary" :disabled="!form || !form.name || !form.id || !form.account || !form.mont" @click="continueTransfer">
                 Aceptar
@@ -283,7 +296,7 @@
                 </v-col>
               </v-row>
               <v-btn block rounded class="mb-3" outlined @click="step--">Cambiar información</v-btn>
-              <v-btn block rounded color="primary" @click="step++">Transferir ahora</v-btn>
+              <v-btn block rounded color="primary" :disabled="loading" :loading="loading" @click="step++">Transferir ahora</v-btn>
             </div>
           </div>
         </center>
@@ -340,10 +353,20 @@
                 <v-col cols="6" align="end">
                   <p>12/06/2022</p>
                 </v-col>
+                <v-col v-if="form.description" cols="6" align="start">
+                  <p class="font-weight-bold">Motivo</p>
+                </v-col>
+                <v-col v-if="form.description" cols="6" align="end">
+                  <p>{{form.description}}</p>
+                </v-col>
               </v-row>
             </div>
             <v-divider class="mt-6 mx-9"></v-divider>
-            <v-btn style="width: 50%"  rounded color="primary" class="mt-6">Nueva transferencia</v-btn>
+            <v-btn style="width: 50%"  rounded color="primary" class="mt-6" @click="()=> {
+              step = 1
+              form = {name: '', id: '', mount: 0, account: ''}
+              init()
+            }">Nueva transferencia</v-btn>
           </v-col>
         </v-row>
       </v-card>
@@ -397,11 +420,13 @@ export default {
     active: false,
     fiends: [],
     isUpdating: false,
+    loading: false,
     form: {
       mont: 0,
       name: '',
       id: '',
-      account: ''
+      account: '',
+      description: ''
     },
     available: ''
   }),
@@ -521,7 +546,17 @@ export default {
     },
     async transfer () {
       try {
-
+        this.loading = true
+        /*  const transfer = await createAxiosPetition('401010', '401010758310');
+                if (sales.ISO_039_ResponseCode !== '000') {
+                  this.$vs.notification({
+                    color: 'danger',
+                    position: 'top-center',
+                    title: 'Error',
+                    text: sales.ISO_039p_ResponseDetail
+                  });
+                  return;
+                } */
       } catch (err) {
         let soapMsg = '';
         if (err.response) {
@@ -541,6 +576,8 @@ export default {
           position: 'top-center',
           text: message
         });
+      } finally {
+        this.loading = false
       }
     },
     convertSales (value) {
