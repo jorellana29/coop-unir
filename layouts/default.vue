@@ -134,6 +134,7 @@ export default {
            });
            return;
          } */
+	console.log('hola')
         this.dataSales = {
           ISO_000_Message_Type: '1210',
           ISO_002_PAN: '',
