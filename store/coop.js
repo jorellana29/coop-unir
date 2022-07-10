@@ -18,14 +18,14 @@ export const state = () => ({
       account: '401010152934',
       avatar: '3'
     },
-    {
+  /*   {
       id: '1712224383',
       name: 'JARAMILLO BORIS NELSON JAVIER',
       country: 'EC',
       phone: '0996702313',
       account: '401010758310',
       avatar: '3'
-    },
+    }, */
     {
       id: '1712721032',
       name: 'VASCONEZ ABAD ROBERTO CARLOS',

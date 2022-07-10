@@ -1,26 +1,25 @@
 module.exports = {
+  root: true,
   env: {
     browser: true,
-    es2021: true,
-    node: true,
+    node: true
+  },
+  parserOptions: {
+    parser: '@typescript-eslint/parser'
   },
   extends: [
-    'plugin:vue/essential',
-    'airbnb-base',
+    '@nuxtjs',
+    'plugin:nuxt/recommended'
   ],
-  parserOptions: {
-  },
-  plugins: [
-    'vue',
-  ],
+  // add your custom rules here
   rules: {
     'comma-dangle': ['error', 'only-multiline'],
     'space-before-function-paren': ['error', 'always'],
+    '@typescript-eslint/no-unused-vars': 'error',
+    '@typescript-eslint/member-delimiter-style': 'error',
     'arrow-parens': ['error', 'as-needed'],
     'no-console': ['warn', { allow: ['warn', 'error'] }],
-    'vue/comment-directive': 0,
-    'vue/multi-word-component-names': ['error', {
-      ignores: ['consultas']
-    }]
-  },
-};
+    'vue/comment-directive': 0
+  }
+}
+

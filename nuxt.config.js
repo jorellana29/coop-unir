@@ -1,4 +1,4 @@
-const BACKEND = process.env.BACKEND || 'http://a036ffb35fa1b433785a33458ca17f5f-1005277024.us-east-1.elb.amazonaws.com:8583/BelejanorSwitch/services';
+const BACKEND = process.env.BACKEND || 'http://a439d486c4d6b4fc2a252f6754d19b55-987740089.us-east-1.elb.amazonaws.com:8583/BelejanorSwitch/services';
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {

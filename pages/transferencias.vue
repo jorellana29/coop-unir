@@ -53,50 +53,20 @@
                 required
                 :rules="[v => (v && Number(form.mont) < Number(available)) || 'Fondos insuficientes']"
               />
-              <p class="secondary--text font-weight-medium">Seleccione una cuenta de amigos u otro cliente</p>
+              <p class="secondary--text font-weight-medium">Seleccione una cuenta de sus favoritos u otro cliente</p>
               <v-tabs>
+                <v-tab>
+                  <v-icon left>
+                    mdi-account-group
+                  </v-icon>
+                  Favoritos
+                </v-tab>
                 <v-tab>
                   <v-icon left>
                     mdi-newspaper-plus
                   </v-icon>
                   Nueva cuenta
                 </v-tab>
-                <v-tab>
-                  <v-icon left>
-                    mdi-account-group
-                  </v-icon>
-                  Amigos
-                </v-tab>
-                <v-tab-item>
-                  <v-card flat>
-                    <v-card-text>
-                        <p class="secondary--text font-weight-medium">Beneficiario</p>
-                        <v-text-field
-                          v-model="form.name"
-                          outlined
-                          @input="form.name = $event.toUpperCase()"
-                          :rules="rules.required"
-                          label="Nombre del beneficiario"
-                        ></v-text-field>
-                        <p class="secondary--text font-weight-medium">Número cuenta</p>
-                        <v-text-field
-                          v-model="form.account"
-                          outlined
-                          type="number"
-                          label="Cuenta"
-                          :rules="rules.account"
-                        ></v-text-field>
-                        <p class="secondary--text font-weight-medium">Identificación</p>
-                        <v-text-field
-                          v-model="form.id"
-                          :rules="rules.required"
-                          outlined
-                          class="mb-0"
-                          label="Identificación"
-                        ></v-text-field>
-                    </v-card-text>
-                  </v-card>
-                </v-tab-item>
                 <v-tab-item>
                   <v-card flat>
                     <v-card-text>
@@ -171,6 +141,36 @@
                           label="Identificación"
                         ></v-text-field>
                       </div>
+                    </v-card-text>
+                  </v-card>
+                </v-tab-item>
+                <v-tab-item>
+                  <v-card flat>
+                    <v-card-text>
+                        <p class="secondary--text font-weight-medium">Beneficiario</p>
+                        <v-text-field
+                          v-model="form.name"
+                          outlined
+                          @input="form.name = $event.toUpperCase()"
+                          :rules="rules.required"
+                          label="Nombre del beneficiario"
+                        ></v-text-field>
+                        <p class="secondary--text font-weight-medium">Número cuenta</p>
+                        <v-text-field
+                          v-model="form.account"
+                          outlined
+                          type="number"
+                          label="Cuenta"
+                          :rules="rules.account"
+                        ></v-text-field>
+                        <p class="secondary--text font-weight-medium">Identificación</p>
+                        <v-text-field
+                          v-model="form.id"
+                          :rules="rules.required"
+                          outlined
+                          class="mb-0"
+                          label="Identificación"
+                        ></v-text-field>
                     </v-card-text>
                   </v-card>
                 </v-tab-item>
@@ -296,7 +296,7 @@
                 </v-col>
               </v-row>
               <v-btn block rounded class="mb-3" outlined @click="step--">Cambiar información</v-btn>
-              <v-btn block rounded color="primary" :disabled="loading" :loading="loading" @click="step++">Transferir ahora</v-btn>
+              <v-btn block rounded color="primary" :disabled="loading" :loading="loading" @click="transfer()">Transferir ahora</v-btn>
             </div>
           </div>
         </center>
@@ -353,16 +353,17 @@
                 <v-col cols="6" align="end">
                   <p>12/06/2022</p>
                 </v-col>
-                <v-col v-if="form.description" cols="6" align="start">
+                <v-col v-if="form.description && form.description !== 'Transferencia normal'" cols="6" align="start">
                   <p class="font-weight-bold">Motivo</p>
                 </v-col>
-                <v-col v-if="form.description" cols="6" align="end">
+                <v-col v-if="form.description && form.description !== 'Transferencia normal'" cols="6" align="end">
                   <p>{{form.description}}</p>
                 </v-col>
               </v-row>
             </div>
             <v-divider class="mt-6 mx-9"></v-divider>
-            <v-btn style="width: 50%"  rounded color="primary" class="mt-6" @click="()=> {
+            <v-btn style="width: 50%"  rounded outlined class="mt-6" to="/">Ir a resumen</v-btn>
+            <v-btn style="width: 50%"  rounded color="primary" class="mt-2" @click="()=> {
               step = 1
               form = {name: '', id: '', mont: 0, account: ''}
               friend = {name: '', id: '', mont: 0, account: ''}
@@ -400,6 +401,7 @@
 import xml2js from 'xml2js';
 import InputNumber from '~/components/InputNumber';
 import { createAxiosPetition } from '@/assets/utils';
+
 export default {
   layout: 'default',
   components: {
@@ -469,17 +471,17 @@ export default {
             title: 'Error',
             text: sales.ISO_039p_ResponseDetail
           });
-          return;
+          return
         }
         this.dataSales = sales;
         const convert = this.convertSales(this.dataSales.ISO_054_AditionalAmounts);
         this.available = convert.available;
       } catch (err) {
-        let soapMsg = '';
+        let soapMsg = ''
         if (err.response) {
           const parser = new xml2js.Parser({
             explicitArray: false,
-          });
+          })
           soapMsg = await parser.parseStringPromise(err.response.data);
           soapMsg = soapMsg['soap:Envelope']['soap:Body'][
             'soap:Fault'
@@ -498,16 +500,20 @@ export default {
     async transfer () {
       try {
         this.loading = true;
-        /*  const transfer = await createAxiosPetition('401010', '401010758310');
-                if (sales.ISO_039_ResponseCode !== '000') {
-                  this.$vs.notification({
-                    color: 'danger',
-                    position: 'top-center',
-                    title: 'Error',
-                    text: sales.ISO_039p_ResponseDetail
-                  });
-                  return;
-                } */
+        if (!this.form.description) {
+          this.form.description = 'Transferencia normal'
+        }
+        const transfer = await createAxiosPetition('401010', '401010758310', this.form);
+        if (transfer.ISO_039_ResponseCode !== '000') {
+          this.$vs.notification({
+            color: 'danger',
+            position: 'top-center',
+            title: 'Error',
+            text: transfer.ISO_039p_ResponseDetail
+          });
+          return;
+        }
+        this.step = 3;
       } catch (err) {
         let soapMsg = '';
         if (err.response) {

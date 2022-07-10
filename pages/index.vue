@@ -1,6 +1,6 @@
 <template>
   <div>
-    <p class="text-h4 mb-4">Cartera</p>
+    <p class="text-h4 mb-4">Resumen</p>
     <v-card class="rounded-lg mb-6 mx-auto" width="65%">
       <v-card-title>
         <p class="primary--text">Saldos Cooperativa UNIR</p>
@@ -84,9 +84,7 @@
                     </template>
                   </v-expansion-panel-header>
                   <v-expansion-panel-content>
-                    <v-text-field
-                      placeholder="Caribbean Cruise"
-                    ></v-text-field>
+                    <p><strong>Fecha:</strong> {{ x.date }}</p>
                   </v-expansion-panel-content>
                 </v-expansion-panel>
               </v-expansion-panels>

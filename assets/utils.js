@@ -11,7 +11,16 @@ function generateUUID (length) {
   }
   return result;
 }
-export async function createAxiosPetition (type, account) {
+
+function transferPetition (data) {
+  return `
+    <ISO_004_AmountTransaction>${data.mont}</ISO_004_AmountTransaction>
+    <ISO_103_AccountID_2>${data.account}</ISO_103_AccountID_2>
+    <ISO_120_ExtendedData>${data.description}</ISO_120_ExtendedData>
+  `;
+}
+
+export async function createAxiosPetition (type, account, transfer = null) {
   const date = moment().format();
   const resp = await axios.post('api/ProcessTransactionIsoPort', `
            <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
@@ -31,6 +40,7 @@ export async function createAxiosPetition (type, account) {
                     <ISO_024_NetworkId>555551</ISO_024_NetworkId>
                     <ISO_041_CardAcceptorID>WEBB</ISO_041_CardAcceptorID>
                     <ISO_102_AccountID_1>${account}</ISO_102_AccountID_1>
+                    ${transfer && transferPetition(transfer)}
                  </Iso8583>
               </imp:processtransaction>
            </soapenv:Body>
@@ -47,3 +57,4 @@ export async function createAxiosPetition (type, account) {
   ].processtransactionReturn;
   return result;
 }
+

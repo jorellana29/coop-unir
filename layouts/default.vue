@@ -81,7 +81,7 @@ export default {
       items: [
         {
           icon: 'mdi-chart-bubble',
-          title: 'Cartera',
+          title: 'Resumen',
           to: '/'
         },
         {
