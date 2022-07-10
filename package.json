@@ -4,14 +4,9 @@
   "private": true,
   "scripts": {
     "dev": "nuxt",
-<<<<<<< HEAD
-    "build": "nuxt generate",
-    "start": "nuxt start",
-=======
     "build": "nuxt build",
     "start": "nuxt start",
     "gcp-build": "npm run build",
->>>>>>> 4a6fa7b753875da5a9466dbc1b5d36372c96f0d1
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
     "eslint": "eslint --ignore-path .gitignore .",
     "generate": "nuxt generate"

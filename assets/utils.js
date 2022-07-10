@@ -11,10 +11,6 @@ function generateUUID (length) {
   }
   return result;
 }
-<<<<<<< HEAD
-=======
-// eslint-disable-next-line import/prefer-default-export
->>>>>>> 4a6fa7b753875da5a9466dbc1b5d36372c96f0d1
 export async function createAxiosPetition (type, account) {
   const date = moment().format();
   const resp = await axios.post('api/ProcessTransactionIsoPort', `
