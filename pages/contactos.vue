@@ -16,12 +16,10 @@
                   <template v-slot:default="{ active }">
                     <v-list-item-content>
                       <v-list-item-title v-text="item.name" class="secondary--text"></v-list-item-title>
-
                       <v-list-item-subtitle
                         class="text--primary"
                         v-text="item.account"
                       ></v-list-item-subtitle>
-
                       <v-list-item-subtitle v-text="`Cooperativa UNIR`"></v-list-item-subtitle>
                     </v-list-item-content>
                   </template>
@@ -41,13 +39,6 @@
         align="center"
         >
           <v-scroll-y-transition mode="out-in">
-<!--            <div-->
-<!--              v-if="!selected"-->
-<!--              class="text-h6 grey&#45;&#45;text text&#45;&#45;lighten-1 font-weight-light"-->
-<!--              style="align-self: center;"-->
-<!--            >-->
-<!--              Seleccionar contacto-->
-<!--            </div>-->
             <v-card
               :key="contacts[selected].id"
               class="pt-6 mx-auto"

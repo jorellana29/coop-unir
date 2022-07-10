@@ -6,7 +6,7 @@
         <v-row align="center">
           <v-col cols="12" md="1" align="end">
             <v-avatar color="grey lighten-3" radius="10px" size="80"
-              >DT</v-avatar
+              >{{ $store.state.coop.sales.ISO_120_ExtendedData && $store.state.coop.sales.ISO_120_ExtendedData.charAt(0) }}</v-avatar
             >
           </v-col>
           <v-col cols="12" md="11" align="start" class="mt-7">
@@ -50,24 +50,11 @@
   </div>
 </template>
 <script>
-import { createAxiosPetition } from '@/assets/utils';
 export default {
   data: () => ({
     tab: null,
   }),
   methods: {
-    async init () {
-      const sales = await createAxiosPetition('311000', '401010758310');
-      if (sales.ISO_039_ResponseCode !== '000') {
-        this.$vs.notification({
-          color: 'danger',
-          position: 'top-center',
-          title: 'Error',
-          text: sales.ISO_039p_ResponseDetail
-        });
-        return;
-      }
-    }
   },
   head () {
     return {

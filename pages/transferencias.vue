@@ -364,7 +364,9 @@
             <v-divider class="mt-6 mx-9"></v-divider>
             <v-btn style="width: 50%"  rounded color="primary" class="mt-6" @click="()=> {
               step = 1
-              form = {name: '', id: '', mount: 0, account: ''}
+              form = {name: '', id: '', mont: 0, account: ''}
+              friend = {name: '', id: '', mont: 0, account: ''}
+              $refs.form.resetValidation()
               init()
             }">Nueva transferencia</v-btn>
           </v-col>
@@ -418,7 +420,7 @@ export default {
     },
     dataSales: {},
     active: false,
-    fiends: [],
+    friends: [],
     isUpdating: false,
     loading: false,
     form: {
@@ -430,9 +432,9 @@ export default {
     },
     available: ''
   }),
-  created () {
-    this.friends = this.$store.state.coop.contacts;
+  mounted () {
     this.init();
+    this.friends = this.$store.state.coop.contacts;
   },
   watch: {
     'friend.name': function (value) {
@@ -460,7 +462,7 @@ export default {
     },
     async init () {
       try {
-        /*  const sales = await createAxiosPetition('311000', '401010758310');
+        const sales = await createAxiosPetition('311000', '401010758310');
         if (sales.ISO_039_ResponseCode !== '000') {
           this.$vs.notification({
             color: 'danger',
@@ -469,58 +471,8 @@ export default {
             text: sales.ISO_039p_ResponseDetail
           });
           return;
-        } */
-        this.dataSales = {
-          ISO_000_Message_Type: '1210',
-          ISO_002_PAN: '',
-          ISO_003_ProcessingCode: '311000',
-          ISO_004_AmountTransaction: '0.0',
-          ISO_006_BillAmount: '0.0',
-          ISO_007_TransDatetime: '2022-05-29T13:15:32-04:00',
-          ISO_008_BillFeeAmount: '0.0',
-          ISO_011_SysAuditNumber: '9079812972',
-          ISO_012_LocalDatetime: '2022-05-29T13:15:32-04:00',
-          ISO_013_LocalDate: '2022-05-29T13:15:32.265-04:00',
-          ISO_015_SettlementDatel: '2022-05-29T00:00:00-04:00',
-          ISO_018_MerchantType: '0004',
-          ISO_019_AcqCountryCode: '',
-          ISO_022_PosEntryMode: '',
-          ISO_023_CardSeq: '',
-          ISO_024_NetworkId: '555551',
-          ISO_028_TranFeeAmount: '0.0',
-          ISO_029_SettlementFee: '0.0',
-          ISO_030_ProcFee: '0.0',
-          ISO_032_ACQInsID: '',
-          ISO_033_FWDInsID: '',
-          ISO_034_PANExt: '',
-          ISO_035_Track2: '',
-          ISO_036_Track3: '',
-          ISO_037_RetrievalReferenceNumber: '',
-          ISO_038_AutorizationNumber: 'CB6E16',
-          ISO_039_ResponseCode: '000',
-          ISO_039p_ResponseDetail: 'TRANSACCION EXITOSA',
-          ISO_041_CardAcceptorID: 'WEBB',
-          ISO_042_Card_Acc_ID_Code: '',
-          ISO_043_CardAcceptorLoc: '',
-          ISO_044_AddRespData: '',
-          ISO_049_TranCurrCode: '0.0',
-          ISO_051_CardCurrCode: '0.0',
-          ISO_052_PinBlock: '',
-          ISO_054_AditionalAmounts: '1001840C0000001000001002840C000000100000',
-          ISO_055_EMV: '',
-          ISO_090_OriginalData: '',
-          ISO_102_AccountID_1: '401010758310',
-          ISO_103_AccountID_2: '',
-          ISO_104_TranDescription: '',
-          ISO_114_ExtendedData: '',
-          ISO_115_ExtendedData: '',
-          ISO_120_ExtendedData: 'JARAMILLO BORIS NELSON JAVIER',
-          ISO_121_ExtendedData: '',
-          ISO_122_ExtendedData: '',
-          ISO_123_ExtendedData: '',
-          ISO_124_ExtendedData: '',
-          ISO_BitMap: 'camt.998.888.A'
-        };
+        }
+        this.dataSales = sales;
         const convert = this.convertSales(this.dataSales.ISO_054_AditionalAmounts);
         this.available = convert.available;
       } catch (err) {
@@ -546,7 +498,7 @@ export default {
     },
     async transfer () {
       try {
-        this.loading = true
+        this.loading = true;
         /*  const transfer = await createAxiosPetition('401010', '401010758310');
                 if (sales.ISO_039_ResponseCode !== '000') {
                   this.$vs.notification({
@@ -577,20 +529,16 @@ export default {
           text: message
         });
       } finally {
-        this.loading = false
+        this.loading = false;
       }
     },
     convertSales (value) {
       const matrix = [];
-      console.log('Arreglo original: ', value);
       const LONGITUD_PEDAZOS = 20;
       for (let i = 0; i < value.length; i += LONGITUD_PEDAZOS) {
         const slice = value.slice(i, i + LONGITUD_PEDAZOS);
         matrix.push(slice);
       }
-      console.log('Arreglo de arreglos: ', matrix);
-      const countable = '';
-      const available = '';
       if (matrix.length > 1) {
         const first = matrix[0];
         const type1 = first.substring(2, 4);
