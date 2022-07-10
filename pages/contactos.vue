@@ -16,10 +16,18 @@
                   <template v-slot:default="{ active }">
                     <v-list-item-content>
                       <v-list-item-title v-text="item.name" class="secondary--text"></v-list-item-title>
+<<<<<<< HEAD
+=======
+
+>>>>>>> 4a6fa7b753875da5a9466dbc1b5d36372c96f0d1
                       <v-list-item-subtitle
                         class="text--primary"
                         v-text="item.account"
                       ></v-list-item-subtitle>
+<<<<<<< HEAD
+=======
+
+>>>>>>> 4a6fa7b753875da5a9466dbc1b5d36372c96f0d1
                       <v-list-item-subtitle v-text="`Cooperativa UNIR`"></v-list-item-subtitle>
                     </v-list-item-content>
                   </template>
@@ -39,6 +47,16 @@
         align="center"
         >
           <v-scroll-y-transition mode="out-in">
+<<<<<<< HEAD
+=======
+<!--            <div-->
+<!--              v-if="!selected"-->
+<!--              class="text-h6 grey&#45;&#45;text text&#45;&#45;lighten-1 font-weight-light"-->
+<!--              style="align-self: center;"-->
+<!--            >-->
+<!--              Seleccionar contacto-->
+<!--            </div>-->
+>>>>>>> 4a6fa7b753875da5a9466dbc1b5d36372c96f0d1
             <v-card
               :key="contacts[selected].id"
               class="pt-6 mx-auto"

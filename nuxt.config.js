@@ -28,7 +28,15 @@ export default {
     { src: '@/plugins/vuesax' },
     { src: '@/plugins/filters' }
   ],
+<<<<<<< HEAD
 
+=======
+  server: {
+    port: process.env.PORT || 3000,
+    host: '0.0.0.0',
+  },
+  telemetry: false,
+>>>>>>> 4a6fa7b753875da5a9466dbc1b5d36372c96f0d1
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
   axios: { proxy: true },

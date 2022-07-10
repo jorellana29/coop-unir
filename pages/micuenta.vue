@@ -6,7 +6,11 @@
         <v-row align="center">
           <v-col cols="12" md="1" align="end">
             <v-avatar color="grey lighten-3" radius="10px" size="80"
+<<<<<<< HEAD
               >{{ $store.state.coop.sales.ISO_120_ExtendedData && $store.state.coop.sales.ISO_120_ExtendedData.charAt(0) }}</v-avatar
+=======
+              >DT</v-avatar
+>>>>>>> 4a6fa7b753875da5a9466dbc1b5d36372c96f0d1
             >
           </v-col>
           <v-col cols="12" md="11" align="start" class="mt-7">
@@ -50,11 +54,30 @@
   </div>
 </template>
 <script>
+<<<<<<< HEAD
+=======
+import { createAxiosPetition } from '@/assets/utils';
+>>>>>>> 4a6fa7b753875da5a9466dbc1b5d36372c96f0d1
 export default {
   data: () => ({
     tab: null,
   }),
   methods: {
+<<<<<<< HEAD
+=======
+    async init () {
+      const sales = await createAxiosPetition('311000', '401010758310');
+      if (sales.ISO_039_ResponseCode !== '000') {
+        this.$vs.notification({
+          color: 'danger',
+          position: 'top-center',
+          title: 'Error',
+          text: sales.ISO_039p_ResponseDetail
+        });
+        return;
+      }
+    }
+>>>>>>> 4a6fa7b753875da5a9466dbc1b5d36372c96f0d1
   },
   head () {
     return {

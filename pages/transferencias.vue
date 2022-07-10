@@ -400,7 +400,6 @@
 import xml2js from 'xml2js';
 import InputNumber from '~/components/InputNumber';
 import { createAxiosPetition } from '@/assets/utils';
-
 export default {
   layout: 'default',
   components: {
